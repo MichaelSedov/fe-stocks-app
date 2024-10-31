@@ -1,28 +1,50 @@
+import { memo } from 'react';
 import './symbolCard.css';
-import { ReactComponent as CompanyIcon } from '@/assets/company.svg';
 import { useAppSelector } from '@/hooks/redux';
-import ListItem from '@/components/ListItem';
+import { selectShowCardInfo } from '@/store/dashboardOptionsSlice';
+import usePriceChangeAnimation from '@/hooks/usePriceChangeAnimation';
+import TrendArrow from './src/TrendArrow';
+import SymbolCardDetails from './src/SymbolCardDetails';
+import SymbolCardPrice from './src/SymbolCardPrice';
+
 
 type SymbolCardProps = {
   id: string;
   onClick: (symbolId: string) => void;
   price: number;
+  isSelected: boolean;
 };
 
-const SymbolCard = ({ id, onClick, price }: SymbolCardProps) => {
-  const { trend, companyName } = useAppSelector((state) => state.stocks.entities[id]);
+const SymbolCard = memo(({ id, onClick, price, isSelected }: SymbolCardProps) => {
+  const { trend, companyName, marketCap, industry } = useAppSelector(
+    (state) => state.stocks.entities[id], 
+    (prev, next) => prev.trend === next.trend && prev.companyName === next.companyName
+  );
+  const showCardInfo = useAppSelector(selectShowCardInfo);
+
+  const { shake, flashClass } = usePriceChangeAnimation(price);
+
   const handleOnClick = () => {
     onClick(id);
   };
+
   return (
-    <div onClick={handleOnClick} className="symbolCard">
-      <div>
-        {id} - {trend}
+    <div onClick={handleOnClick} className={`symbolCard ${shake ? 'symbolCard__shake' : ''} ${
+        isSelected ? 'selected' : ''
+      } ${ flashClass || '' }`}>
+      <div className="symbolCard__header">
+        {id}
+        <TrendArrow trend={trend} />
       </div>
-      <div>Price:</div>
-      <div>{price || '--'} </div>
-      <ListItem Icon={<CompanyIcon />} label={companyName} />
+      <SymbolCardPrice price={price} />
+      {showCardInfo && (
+        <SymbolCardDetails
+          companyName={companyName}
+          industry={industry}
+          marketCap={marketCap}
+        />
+      )}
     </div>
   );
-};
+});
 export default SymbolCard;

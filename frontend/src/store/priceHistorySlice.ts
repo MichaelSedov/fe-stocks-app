@@ -18,6 +18,7 @@ type PriceHistoryState = {
     loading: boolean | null;
     error: boolean;
   };
+  currentRequestId: string | null;
 };
 
 const initialState: PriceHistoryState = {
@@ -26,7 +27,8 @@ const initialState: PriceHistoryState = {
   apiState: {
     loading: null,
     error: false
-  }
+  },
+  currentRequestId: null,
 };
 
 export const fetchPriceHistory = createAsyncThunk(
@@ -51,23 +53,30 @@ const priceHistorySlice = createSlice({
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchPriceHistory.fulfilled, (state, action) => {
-      const { symbol, history } = action.payload;
-      state.apiState.error = false;
-      state.apiState.loading = false;
-      state.history = history;
-      state.symbol = symbol;
+      if (state.currentRequestId === action.meta.requestId) {
+        const { symbol, history } = action.payload;
+        state.apiState.error = false;
+        state.apiState.loading = false;
+        state.history = history;
+        state.symbol = symbol;
+        state.currentRequestId = null;
+      }
     });
 
     builder.addCase(fetchPriceHistory.rejected, (state, action) => {
-      if (!action.meta.aborted) {
-        state.apiState.error = true;
-        state.apiState.loading = false;
+      if (state.currentRequestId === action.meta.requestId) {
+        if (!action.meta.aborted) {
+          state.apiState.error = true;
+          state.apiState.loading = false;
+        }
+        state.currentRequestId = null;
       }
     });
 
     builder.addCase(fetchPriceHistory.pending, (state, action) => {
       state.apiState.error = false;
       state.apiState.loading = true;
+      state.currentRequestId = action.meta.requestId;
     });
   }
 });

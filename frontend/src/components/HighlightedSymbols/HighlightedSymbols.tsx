@@ -53,11 +53,11 @@ const data: HighlightedSymbol[] = [
 const HighlightedSymbols = () => {
   return (
     <Row spacing="md" className="highlightedSymbols">
-      {data.map((symbol, index) => {
+      {data.map((symbol) => {
         return (
           <PerformanceCard
             change={symbol.change}
-            key={index}
+            key={symbol.symbolId}
             trend={symbol.trend}
             title={symbol.symbolId}
             volume={symbol.volume}
