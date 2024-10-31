@@ -6,6 +6,7 @@ import usePriceChangeAnimation from '@/hooks/usePriceChangeAnimation';
 import TrendArrow from './src/TrendArrow';
 import SymbolCardDetails from './src/SymbolCardDetails';
 import SymbolCardPrice from './src/SymbolCardPrice';
+import { classNames } from '@/utils/utils';
 
 
 type SymbolCardProps = {
@@ -28,13 +29,18 @@ const SymbolCard = memo(({ id, onClick, price, isSelected }: SymbolCardProps) =>
     onClick(id);
   };
 
+  const classes = classNames(
+    'symbolCard',
+    shake ? 'symbolCard__shake' : '',
+    isSelected ? 'selected' : '',
+    flashClass || ''
+  );
+
   return (
-    <div onClick={handleOnClick} className={`symbolCard ${shake ? 'symbolCard__shake' : ''} ${
-        isSelected ? 'selected' : ''
-      } ${ flashClass || '' }`}>
+    <div onClick={handleOnClick} className={classes}>
       <div className="symbolCard__header">
         {id}
-        <TrendArrow trend={trend} />
+        {trend && <TrendArrow trend={trend} />}
       </div>
       <SymbolCardPrice price={price} />
       {showCardInfo && (

@@ -1,6 +1,7 @@
 
 import { Suspense, lazy } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
+import Loading from '@/components/Loading';
 
 const SymbolsView = lazy(() => import('@/components/SymbolsView'));
 const StatementsView = lazy(() => import('@/components/StatementsView'));
@@ -8,7 +9,7 @@ const ProfileView = lazy(() => import('@/components/ProfileView'));
 
 const Router = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading />}>
       <Routes>
         <Route index element={<SymbolsView />} />
         <Route index path="profile" element={<ProfileView />} />
