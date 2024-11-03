@@ -1,0 +1,17 @@
+.price {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 6px;
+}
+
+.price__title {
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.price__value {
+  font-weight: 600;
+  font-size: 24px;
+}

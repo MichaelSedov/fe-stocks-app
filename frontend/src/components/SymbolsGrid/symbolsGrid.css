@@ -1,0 +1,42 @@
+.symbolsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px;
+}
+
+.symbolsGrid .symbolCard {
+  flex: 0 0 calc(25% - 20px);
+  max-width: calc(25% - 20px);
+  box-sizing: border-box;
+  margin: 10px;
+  transition: transform 0.3s ease;
+}
+
+.symbolsGrid.symbolsGrid--selected .symbolCard.selected {
+  transform: scale(1.02);
+}
+
+.symbolsGrid.symbolsGrid--selected .symbolCard:not(.selected) {
+  transform: scale(0.98);
+}
+
+@media (max-width: 1240px) {
+  .symbolsGrid .symbolCard {
+    flex: 0 0 calc(33.3333% - 20px);
+    max-width: calc(33.3333% - 20px);
+  }
+}
+
+@media (max-width: 600px) {
+  .symbolsGrid .symbolCard {
+    flex: 0 0 calc(50% - 20px);
+    max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 450px) {
+  .symbolsGrid .symbolCard {
+    flex: 0 0 calc(100% - 20px);
+    max-width: calc(100% - 20px);
+  }
+}
