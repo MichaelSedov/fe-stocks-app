@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
+const SHAKE_PERCENT = 1.25;
+
 function usePriceChangeAnimation(price: number | null) {
   const [shake, setShake] = useState(false);
   const [flashClass, setFlashClass] = useState<string | null>(null);
@@ -24,7 +26,7 @@ function usePriceChangeAnimation(price: number | null) {
         setFlashClass(null);
       }, 800);
 
-      if (prevPrice > 0 && price >= prevPrice * 1.25) {
+      if (prevPrice > 0 && price >= prevPrice * SHAKE_PERCENT) {
         setShake(true);
         shakeTimeout = setTimeout(() => {
           setShake(false);

@@ -11,7 +11,6 @@ type SymbolsGridProps = {
 
 const SymbolsGrid = ({ onSymbolClick, activeSymbol }: SymbolsGridProps) => {
   const stockSymbols = useAppSelector(selectors.selectStockIds);
-  const prices = useAppSelector((state) => state.prices);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchAllStocks());
@@ -21,8 +20,8 @@ const SymbolsGrid = ({ onSymbolClick, activeSymbol }: SymbolsGridProps) => {
 
   return (
     <div className={gridClassName}>
-      {stockSymbols.map((id, i) => (
-        <SymbolCard price={prices[id]} onClick={onSymbolClick} key={id} id={id} isSelected={activeSymbol === id} />
+      {stockSymbols.map((id) => (
+        <SymbolCard onClick={onSymbolClick} key={id} id={id} isSelected={activeSymbol === id} />
       ))}
     </div>
   );

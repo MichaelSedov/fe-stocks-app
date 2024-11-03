@@ -12,11 +12,11 @@ import { classNames } from '@/utils/utils';
 type SymbolCardProps = {
   id: string;
   onClick: (symbolId: string) => void;
-  price: number;
   isSelected: boolean;
 };
 
-const SymbolCard = memo(({ id, onClick, price, isSelected }: SymbolCardProps) => {
+const SymbolCard = memo(({ id, onClick, isSelected }: SymbolCardProps) => {
+  const price = useAppSelector((state) => state.prices[id]);
   const { trend, companyName, marketCap, industry } = useAppSelector(
     (state) => state.stocks.entities[id], 
     (prev, next) => prev.trend === next.trend && prev.companyName === next.companyName
